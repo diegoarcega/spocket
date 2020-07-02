@@ -1,4 +1,14 @@
-// import React from 'react';
-import { Card } from './product-card.styles';
+import React, { memo } from 'react';
+import { Container, ImageContainer, Image } from './product-card.styles';
 
-export default Card;
+const ProductCard = ({ imgSrc }) => {
+  return (
+    <Container>
+      <ImageContainer>
+        <Image src={imgSrc} />
+      </ImageContainer>
+    </Container>
+  );
+};
+
+export default memo(ProductCard);

@@ -20,6 +20,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-awesome-styled-grid": "^3.0.10",
+    "react-cool-img": "^1.2.0",
     "react-dom": "^16.13.1",
     "react-query": "^2.4.11",
     "react-router-dom": "^5.2.0",

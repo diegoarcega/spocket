@@ -16,7 +16,7 @@ const ProductSearch = () => {
   const [keyword, setKeyword] = useState('');
   const [page, setPage] = useState(0);
 
-  const setKeywordDebounced = debounce(setKeyword, 800);
+  const setKeywordDebounced = debounce(setKeyword, 500);
   const handleSearchChange = ({ target }) => setKeywordDebounced(target.value);
 
   const { isLoading, isError, error, resolvedData, latestData, isFetching } = usePaginatedQuery(
@@ -44,7 +44,7 @@ const ProductSearch = () => {
           <Row>
             {resolvedData.data.map(project => (
               <Col align="center" justify="center" key={project.id}>
-                <Card>{project.title}</Card>
+                <Card imgSrc={project.image_cover_url}>{project.title}</Card>
               </Col>
             ))}
           </Row>

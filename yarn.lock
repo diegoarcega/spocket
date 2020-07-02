@@ -9555,6 +9555,11 @@ react-awesome-styled-grid@^3.0.10:
   resolved "https://registry.yarnpkg.com/react-awesome-styled-grid/-/react-awesome-styled-grid-3.0.10.tgz#b51b7ec7444487d3ce9ddcc9f1b9517bcfbd470d"
   integrity sha512-YNzFiDCwehC6v5z7eYwUiSm6MhoxqNJcSFSFQMnStDlDpqINmj/WYDxvyY8mG3iHdaSsBLAWn3CjmFc4k2dyNw==
 
+react-cool-img@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-cool-img/-/react-cool-img-1.2.0.tgz#3893c3cf4c7b844fd4f86a4e5037d8968f0d276d"
+  integrity sha512-hPkTKAv0ua/Ds6z+0eON22JJy+ciPELnqSj67McWc+bFa2WH/EqjneAJTtk9IZKZmygecnbtd/eNWh9Pw8MKhw==
+
 react-dev-utils@^10.2.1:
   version "10.2.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-10.2.1.tgz#f6de325ae25fa4d546d09df4bb1befdc6dd19c19"
