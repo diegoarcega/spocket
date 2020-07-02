@@ -24,3 +24,14 @@ export const InputStyled = styled.input`
   cursor: ${props => (props.isLoading ? 'wait' : 'default')};
   filter: ${props => (props.isLoading ? 'brightness(1.2) saturate(70%)' : 'none')};
 `;
+
+export const Container = styled.div`
+  width: ${props => props.width};
+  position: relative;
+`;
+
+export const Loading = styled.div`
+  position: absolute;
+  right: 25px;
+  top: 23px;
+`;

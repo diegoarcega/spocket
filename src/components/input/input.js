@@ -1,13 +1,18 @@
-import React, { memo, Fragment } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { InputStyled } from './input.styles';
+import { Spinner } from 'components/loading';
+import { InputStyled, Container, Loading } from './input.styles';
 
 const Input = ({ isLoading, ...rest }) => {
   return (
-    <Fragment>
+    <Container width={rest.width}>
       <InputStyled isLoading={isLoading} {...rest} />
-      {isLoading && <span>loading</span>}
-    </Fragment>
+      {isLoading && (
+        <Loading>
+          <Spinner size="15" />
+        </Loading>
+      )}
+    </Container>
   );
 };
 

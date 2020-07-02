@@ -5,10 +5,9 @@ const api = axios.create({
   baseURL: config.baseApiUrl,
 });
 
-api.interceptors.request.use(config => {
-  const newConfig = { ...config };
-  newConfig.headers.authorization = config.authorizationToken;
-  return newConfig;
+api.interceptors.request.use(currentConfig => {
+  currentConfig.headers.authorization = config.authorizationToken;
+  return currentConfig;
 });
 
 api.interceptors.response.use(

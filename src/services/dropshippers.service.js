@@ -8,4 +8,4 @@ function listings(keywords) {
   return api.get(`${ENDPOINT.LISTINGS}?keywords=${keywords}`);
 }
 
-export { listings, ENDPOINT };
+export default { listings, ENDPOINT };

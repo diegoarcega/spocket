@@ -1,1 +1,1 @@
-export * as Dropshippers from './dropshippers.service';
+export { default as Dropshippers } from './dropshippers.service';
