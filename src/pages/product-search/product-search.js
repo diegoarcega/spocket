@@ -11,8 +11,8 @@ const ProductSearch = () => {
       <PageTitle>Product Search</PageTitle>
       <Space vertical="20" />
       <Group direction="row">
-        <Input />
-        <Button>Search</Button>
+        <Input width="100%" />
+        <Button variant="addon-right">Search</Button>
       </Group>
     </Fragment>
   );

@@ -11,12 +11,13 @@ export const Button = styled.button`
   justify-content: center;
   align-items: center;
   background: ${props => props.backgroundColor};
-  padding: 10px 20px;
+  padding: 10px 26px;
+  font-size: inherit;
   min-height: 58px;
   color: ${props => props.color};
-  text-transform: ${props => props.transform};
+  font-weight: ${props => props.weight};
   border: 0;
-  border-radius: 3px;
+  border-radius: ${props => getVariant(props.variant)};
   outline: 0;
   cursor: ${props => getCursor(props)};
   filter: ${props => (props.isLoading || props.disabled ? 'brightness(1.2) saturate(60%)' : 'none')};
@@ -34,9 +35,10 @@ Button.propTypes = {
   shrink: PropTypes.string,
   color: PropTypes.string,
   backgroundColor: PropTypes.string,
-  transform: PropTypes.string,
+  weight: PropTypes.number,
   disabled: PropTypes.bool,
   isLoading: PropTypes.bool,
+  variant: PropTypes.string,
 };
 
 Button.defaultProps = {
@@ -46,18 +48,30 @@ Button.defaultProps = {
   shrink: 'shrink',
   color: theme.button.color,
   backgroundColor: theme.button.backgroundColor,
-  transform: 'none',
+  weight: 900,
   disabled: false,
   isLoading: false,
+  variant: 'normal',
 };
 
-function getCursor(props) {
-  if (props.isLoading) {
+function getCursor({ isLoading, disabled }) {
+  if (isLoading) {
     return 'wait';
   }
-  if (props.disabled) {
+  if (disabled) {
     return 'not-allowed';
   }
 
   return 'pointer';
+}
+
+function getVariant(variant) {
+  switch (variant) {
+    case 'addon-right':
+      return '0px 3px 3px 0px';
+    case 'addon-left':
+      return '3px 0 0 3px';
+    default:
+      return '3px';
+  }
 }

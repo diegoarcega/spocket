@@ -6,7 +6,6 @@ export const Container = styled(ContainerRaw)`
   flex-direction: column;
   flex-grow: 1;
   min-height: 100%;
-  min-height: -webkit-fill-available;
 `;
 
 export const Content = styled.div`
@@ -14,6 +13,4 @@ export const Content = styled.div`
   position: relative;
   flex-direction: column;
   flex-grow: 1;
-  min-height: 100%;
-  min-height: -webkit-fill-available;
 `;

@@ -12,7 +12,7 @@ const Input = ({ isLoading, ...rest }) => {
 };
 
 Input.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool,
 };
 
 export default memo(Input);

@@ -9,7 +9,7 @@ const GlobalStyles = createGlobalStyle`
     font-family: ${props => props.theme.fonts.nunito};
     font-size: ${props => props.theme.fontSizes.normal};
     color: ${props => props.theme.colors.text};
-    background: ${props => props.theme.colors.background};
+    background: ${props => props.theme.colors.globalBackground};
     min-height: 100%;
     min-height: -webkit-fill-available;
   }

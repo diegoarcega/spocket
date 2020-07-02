@@ -26,7 +26,7 @@ export default {
     borderColor: '#e1e1e1',
     placeholderColor: '#494563',
     color: '#494563',
-    activeBorderColor: '#ddd',
-    hoverBorderColor: '#ddd',
+    activeBorderColor: '#bbb',
+    hoverBorderColor: '#bbb',
   },
 };
