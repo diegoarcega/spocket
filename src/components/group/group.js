@@ -1,4 +1,5 @@
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Group = styled.div`
   display: flex;
@@ -6,10 +7,19 @@ const Group = styled.div`
   flex-grow: ${props => props.grow};
   flex-basis: ${props => props.basis};
   flex-shrink: ${props => props.shrink};
-  flex-direction: ${props => getDirection(props)};
+  flex-direction: ${props => props.direction};
   align-items: ${props => props.alignItems};
   justify-content: ${props => props.justifyContent};
 `;
+
+Group.propTypes = {
+  alignItems: PropTypes.string,
+  justifyContent: PropTypes.string,
+  wrap: PropTypes.string,
+  basis: PropTypes.string,
+  shrink: PropTypes.string,
+  direction: PropTypes.string,
+};
 
 Group.defaultProps = {
   alignItems: 'normal',
@@ -17,22 +27,7 @@ Group.defaultProps = {
   wrap: 'nowrap',
   basis: 'initial',
   shrink: 'shrink',
+  direction: 'column',
 };
-
-function getDirection({ flexDirection, horizontal, vertical }) {
-  if (flexDirection) {
-    return flexDirection;
-  }
-
-  if (horizontal) {
-    return 'row';
-  }
-
-  if (vertical) {
-    return 'column';
-  }
-
-  return 'column';
-}
 
 export default Group;

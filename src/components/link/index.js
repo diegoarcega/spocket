@@ -1,5 +1,4 @@
-import styled, { css } from 'styled-components/macro';
-import { Link as RouterLink } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
 const styles = css`
   font-weight: bold;
@@ -12,10 +11,6 @@ const styles = css`
   }
 `;
 
-export const Link = styled(RouterLink)`
-  ${styles}
-`;
-
-export const Anchor = styled.a`
+export const Link = styled.a`
   ${styles}
 `;

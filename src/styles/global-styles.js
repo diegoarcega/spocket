@@ -6,9 +6,9 @@ const GlobalStyles = createGlobalStyle`
     width: 100%;
     margin: 0;
     padding: 0;
-    font-family: 'Nunito', sans-serif;
-    font-size: 16px;
-    color: #000;
+    font-family: ${props => props.theme.fonts.nunito};
+    font-size: ${props => props.theme.fontSizes.normal};
+    color: ${props => props.theme.colors.text};
     background: ${props => props.theme.colors.background};
     min-height: 100%;
     min-height: -webkit-fill-available;

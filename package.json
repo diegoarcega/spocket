@@ -22,8 +22,10 @@
     "react-awesome-styled-grid": "^3.0.10",
     "react-dom": "^16.13.1",
     "react-query": "^2.4.11",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-spinners-kit": "^1.9.1",
+    "reactjs-compose": "^1.0.4",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
