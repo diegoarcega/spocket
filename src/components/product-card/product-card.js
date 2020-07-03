@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Text } from 'components/text';
 import { Group } from 'components/group';
 import { Space } from 'components/space';
-import { Container, ImageContainer, Image, Description } from './product-card.styles';
+import { Container, ImageContainer, Image, Description, Title } from './product-card.styles';
 
 const flags = {
   'United States': '&#x1F1FA;&#x1F1F8;',
@@ -17,7 +17,7 @@ const ProductCard = ({ imgSrc, title, supplierShopName, countryOrigin, msrp, pri
         <Image src={imgSrc} />
       </ImageContainer>
       <Description>
-        <Text size="small">{title}</Text>
+        <Title size="small">{title}</Title>
         <Space vertical="9" />
         <Group direction="row" alignItems="center">
           <Text size="small">By</Text>

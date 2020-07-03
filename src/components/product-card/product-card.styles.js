@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Img from 'react-cool-img';
+import { Text } from 'components/text';
 
 export const Container = styled.div`
   display: flex;
@@ -29,4 +30,10 @@ export const Image = styled(Img)`
 
 export const Description = styled.div`
   padding: 15px 22px;
+`;
+
+export const Title = styled(Text)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
