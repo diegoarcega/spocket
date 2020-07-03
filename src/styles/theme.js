@@ -6,6 +6,7 @@ export default {
     muted: '#7e768f',
     error: '#ff6565',
     globalBackground: '#f4f5f8',
+    border: '#e1e1e1',
   },
   fonts: {
     nunito: "'Nunito', sans-serif",

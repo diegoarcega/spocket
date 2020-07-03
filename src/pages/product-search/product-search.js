@@ -1,36 +1,74 @@
-import React, { memo, Fragment, useState } from 'react';
+import React, { memo, Fragment, useState, useEffect, useRef } from 'react';
 import { usePaginatedQuery } from 'react-query';
 import { Dropshippers } from 'services';
 import debounce from 'lodash.debounce';
+import VisibilitySensor from 'react-visibility-sensor';
 import { PageTitle } from 'components/page';
 import { Space } from 'components/space';
 import { Group } from 'components/group';
 import { Input } from 'components/input';
 import { Button } from 'components/button';
-import { Loading } from 'components/loading';
+import { Loading, Spinner } from 'components/loading';
 import { Row, Col } from 'components/grid';
 import { Card } from 'components/product-card';
 import { ProductsContainer } from './product-search.styles';
 
+const ITEMS_PER_PAGE = 24;
+
 const ProductSearch = () => {
   const [keyword, setKeyword] = useState('');
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
+  const [results, setResults] = useState([]);
+  const inputRef = useRef(null);
 
   const setKeywordDebounced = debounce(setKeyword, 500);
   const handleSearchChange = ({ target }) => setKeywordDebounced(target.value);
 
-  const { isLoading, isError, error, resolvedData, latestData, isFetching } = usePaginatedQuery(
-    [Dropshippers.ENDPOINT.LISTINGS, keyword],
-    (key, keyword) => Dropshippers.listings(keyword),
+  function fetchMore(isVisible) {
+    if (isVisible) {
+      setPage(_page => _page + 1);
+    }
+  }
+
+  function handleSearchClick() {
+    setKeyword(inputRef.current.value || '');
+  }
+
+  useEffect(() => {
+    setPage(1);
+  }, [keyword]);
+
+  const { isLoading, isError, error, isFetching, resolvedData } = usePaginatedQuery(
+    [Dropshippers.ENDPOINT.LISTINGS, keyword, page],
+    (key, keyword, page) => Dropshippers.listings(keyword, page),
+    {
+      refetchOnWindowFocus: false,
+    },
   );
+
+  useEffect(() => {
+    if (!resolvedData) return;
+    if (page === 1) {
+      return setResults(resolvedData.data);
+    }
+    setResults(currentResults => [...currentResults, ...resolvedData.data]);
+  }, [resolvedData, page]);
 
   return (
     <Fragment>
       <PageTitle>Product Search</PageTitle>
       <Space vertical="20" />
       <Group direction="row">
-        <Input width="100%" autoFocus onChange={handleSearchChange} isLoading={isFetching} />
-        <Button variant="addon-right">Search</Button>
+        <Input
+          width="100%"
+          autoFocus
+          onChange={handleSearchChange}
+          isLoading={!isLoading && isFetching}
+          innerRef={inputRef}
+        />
+        <Button variant="addon-right" onClick={handleSearchClick}>
+          Search
+        </Button>
       </Group>
       <Space vertical="30" />
       <ProductsContainer>
@@ -39,41 +77,38 @@ const ProductSearch = () => {
         ) : isError ? (
           <div>Error: {error.message}</div>
         ) : (
-          // `resolvedData` will either resolve to the latest page's data
-          // or if fetching a new page, the last successful page's data
           <Row>
-            {resolvedData.data.map(project => (
-              <Col align="center" justify="center" key={project.id}>
-                <Card imgSrc={project.image_cover_url}>{project.title}</Card>
+            {results.map(product => (
+              <Col align="center" justify="center" key={product.id}>
+                <Card
+                  title={product.title}
+                  price={product.formatted_price}
+                  msrp={product.formatted_msrp}
+                  countryOrigin={product.country_origin}
+                  supplierShopName={product.supplier_shop_name}
+                  imgSrc={product.image_cover_url}
+                />
               </Col>
             ))}
           </Row>
         )}
       </ProductsContainer>
-      <span>Current Page: {page + 1}</span>
-      <Group direction="row">
-        <button onClick={() => setPage(old => Math.max(old - 1, 0))} disabled={page === 0}>
-          Previous Page
-        </button>{' '}
-        <button
-          onClick={() =>
-            // Here, we use `latestData` so the Next Page
-            // button isn't relying on potentially old data
-            setPage(old => (!latestData || !latestData.hasMore ? old : old + 1))
-          }
-          disabled={!latestData || !latestData.hasMore}
-        >
-          Next Page
-        </button>
-      </Group>
-      {
-        // Since the last page's data potentially sticks around between page requests,
-        // we can use `isFetching` to show a background loading
-        // indicator since our `status === 'loading'` state won't be triggered
-        isFetching ? <span> Loading...</span> : null
-      }{' '}
+      {!isLoading && (
+        <VisibilitySensor onChange={fetchMore} offset={{ top: 0 }}>
+          <Fragment>
+            <Group direction="row" justifyContent="center">
+              {shouldShowSpinner(resolvedData, ITEMS_PER_PAGE) && <Spinner size={20} />}
+            </Group>
+            <Space vertical="50" />
+          </Fragment>
+        </VisibilitySensor>
+      )}
     </Fragment>
   );
 };
+
+function shouldShowSpinner(newResults, itemsPerPage) {
+  return itemsPerPage === newResults?.data?.length;
+}
 
 export default memo(ProductSearch);
