@@ -36,7 +36,7 @@ const ProductCard = ({ imgSrc, title, supplierShopName, countryOrigin, msrp, pri
             <Text weight="bold">{price.replace('USD', '')}</Text>
           </Group>
           <Group alignItems="flex-end">
-            <Text size="xsmall" color="muted">
+            <Text size="xsmall" color="muted" align="right">
               Retail Price (usd)
             </Text>
             <Space vertical="3" />

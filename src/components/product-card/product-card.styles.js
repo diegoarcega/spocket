@@ -6,8 +6,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   background: #fff;
-  width: 265px;
-  max-width: 265px;
+  width: 100%;
+  max-width: 100%;
   height: 431px;
   margin-bottom: 27px;
   border: 1px solid ${props => props.theme.colors.border};
@@ -25,7 +25,7 @@ export const ImageContainer = styled.div`
 
 export const Image = styled(Img)`
   min-height: 306px;
-  min-width: 265px;
+  width: 100%;
 `;
 
 export const Description = styled.div`

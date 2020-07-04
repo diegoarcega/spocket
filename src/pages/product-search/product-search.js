@@ -79,7 +79,7 @@ const ProductSearch = () => {
         ) : (
           <Row>
             {results.map(product => (
-              <Col align="center" justify="center" key={product.id}>
+              <Col xs={8} sm={2} md={2} key={product.id}>
                 <Card
                   title={product.title}
                   price={product.formatted_price}
