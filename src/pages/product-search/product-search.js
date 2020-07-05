@@ -1,5 +1,5 @@
-import React, { memo, Fragment, useState, useEffect, useRef } from 'react';
-import { usePaginatedQuery } from 'react-query';
+import React, { memo, Fragment, useState, useRef } from 'react';
+import { useInfiniteQuery } from 'react-query';
 import { Dropshippers } from 'services';
 import debounce from 'lodash.debounce';
 import VisibilitySensor from 'react-visibility-sensor';
@@ -13,46 +13,37 @@ import { Row, Col } from 'components/grid';
 import { Card } from 'components/product-card';
 import { ProductsContainer } from './product-search.styles';
 
-const ITEMS_PER_PAGE = 24;
-
 const ProductSearch = () => {
-  const [keyword, setKeyword] = useState('');
-  const [page, setPage] = useState(1);
-  const [results, setResults] = useState([]);
+  const [activePage, setActivePage] = useState({ page: 1, keyword: '' });
   const inputRef = useRef(null);
 
-  const setKeywordDebounced = debounce(setKeyword, 500);
+  const setKeywordDebounced = debounce(value => setActivePage({ page: 1, keyword: value }), 500);
   const handleSearchChange = ({ target }) => setKeywordDebounced(target.value);
 
-  function fetchMore(isVisible) {
-    if (isVisible) {
-      setPage(_page => _page + 1);
-    }
-  }
-
   function handleSearchClick() {
-    setKeyword(inputRef.current.value || '');
+    activePage({ page: 1, keyword: inputRef.current.value });
   }
 
-  useEffect(() => {
-    setPage(1);
-  }, [keyword]);
-
-  const { isLoading, isError, error, isFetching, resolvedData } = usePaginatedQuery(
-    [Dropshippers.ENDPOINT.LISTINGS, keyword, page],
-    (key, keyword, page) => Dropshippers.listings(keyword, page),
+  const { isLoading, isError, error, isFetching, data, fetchMore } = useInfiniteQuery(
+    [Dropshippers.ENDPOINT.LISTINGS, activePage.keyword, activePage.page],
+    (key, keyword, initialPage, currentPage = 1) =>
+      Dropshippers.listings(keyword, currentPage).then(response => ({
+        data: response.data,
+        nextPage: currentPage + 1,
+      })),
     {
+      refetchOnMount: false,
+      refetchIntervalInBackground: false,
       refetchOnWindowFocus: false,
+      getFetchMore: lastGroup => lastGroup.nextPage,
     },
   );
 
-  useEffect(() => {
-    if (!resolvedData) return;
-    if (page === 1) {
-      return setResults(resolvedData.data);
+  function handleFetchMore(isVisible) {
+    if (isVisible && data && hasMorePages(data)) {
+      return fetchMore();
     }
-    setResults(currentResults => [...currentResults, ...resolvedData.data]);
-  }, [resolvedData, page]);
+  }
 
   return (
     <Fragment>
@@ -78,37 +69,38 @@ const ProductSearch = () => {
           <div>Error: {error.message}</div>
         ) : (
           <Row>
-            {results.map(product => (
-              <Col xs={8} sm={2} md={2} key={product.id}>
-                <Card
-                  title={product.title}
-                  price={product.formatted_price}
-                  msrp={product.formatted_msrp}
-                  countryOrigin={product.country_origin}
-                  supplierShopName={product.supplier_shop_name}
-                  imgSrc={product.image_cover_url}
-                />
-              </Col>
+            {data.map((page, i) => (
+              <Fragment key={i}>
+                {page.data.map(product => (
+                  <Col xs={8} sm={2} md={2} key={product.id}>
+                    <Card
+                      title={product.title}
+                      price={product.formatted_price}
+                      msrp={product.formatted_msrp}
+                      countryOrigin={product.country_origin}
+                      supplierShopName={product.supplier_shop_name}
+                      imgSrc={product.image_cover_url}
+                    />
+                  </Col>
+                ))}
+              </Fragment>
             ))}
           </Row>
         )}
       </ProductsContainer>
-      {!isLoading && (
-        <VisibilitySensor onChange={fetchMore} offset={{ top: 0 }}>
-          <Fragment>
-            <Group direction="row" justifyContent="center">
-              {shouldShowSpinner(resolvedData, ITEMS_PER_PAGE) && <Spinner size={20} />}
-            </Group>
-            <Space vertical="50" />
-          </Fragment>
-        </VisibilitySensor>
-      )}
+      <VisibilitySensor onChange={handleFetchMore} offset={{ top: 100 }}>
+        <Group direction="column" alignItems="center">
+          {isFetching && <Spinner size={20} />}
+          <Space vertical="50" />
+        </Group>
+      </VisibilitySensor>
     </Fragment>
   );
 };
 
-function shouldShowSpinner(newResults, itemsPerPage) {
-  return itemsPerPage === newResults?.data?.length;
+function hasMorePages(data) {
+  const lastPage = data[data.length - 1];
+  return lastPage.data.length > 0;
 }
 
 export default memo(ProductSearch);

@@ -14,7 +14,7 @@ const ProductCard = ({ imgSrc, title, supplierShopName, countryOrigin, msrp, pri
   return (
     <Container>
       <ImageContainer>
-        <Image src={imgSrc} />
+        <Image src={imgSrc} alt={title} />
       </ImageContainer>
       <Description>
         <Title size="small">{title}</Title>
